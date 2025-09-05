@@ -4,7 +4,7 @@ Welcome to my personal portfolio website! This site is a digital showcase of who
 
 ## 🔥 Live Preview
 
-Check it out live here: [Portfolio Website](https://Bhaumiksingh10.online)  
+Check it out live here: [Portfolio Website](https://bhaumikportfolio.netlify.app/)  
 
 
 ---
