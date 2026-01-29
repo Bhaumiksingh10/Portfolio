@@ -9,160 +9,151 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
 
   <link rel="stylesheet" href="styles.css">
 
-  <title>Portfolio</title>
+  <title>Bhaumik | Portfolio</title>
 </head>
 <body>
 
+<!-- NAVBAR -->
+<nav>
+  <div class="left">
+    <a href="/">Portfolio</a>
+  </div>
 
-  <!-- NAVBAR -->
-  <nav>
-    <div class="left">
-      <a href="/">Portfolio</a>
-    </div>
-
-    <div class="right">
-      <a href="https://github.com/Bhaumiksingh10" target="_blank" rel="noopener noreferrer">
-        <i class="fa-brands fa-github"></i>
-        <span>Github</span>
-      </a>
-      
-      <a href="https://www.linkedin.com/in/bhaumik-singh-chauhan-84148a271/" target="_blank" rel="noopener noreferrer">
-        <i class="fa-brands fa-linkedin"></i>
-        <span>Linkedin</span>
-      </a>
-      
-      <a href="https://drive.google.com/file/d/1UlVWrLADAAZal7O2h-HzK6AesDrLrVPF/view?usp=drive_link" target="_blank" download="YourName_Resume.pdf" rel="noopener noreferrer">
-        <i class="fa-solid fa-file-arrow-down"></i>
-        <span>Download Resume</span>
+  <div class="right">
+    <a href="https://github.com/Bhaumiksingh10" target="_blank">
+      <i class="fa-brands fa-github"></i>
+      <span>Github</span>
     </a>
     
-      <a href="https://codolio.com/profile/bhaumiksingh_10">
-        <i class="fa-solid fa-code"></i>
-        <span>Coding Profle</span>
-      </a>
+    <a href="https://www.linkedin.com/in/bhaumik-singh-chauhan-84148a271/" target="_blank">
+      <i class="fa-brands fa-linkedin"></i>
+      <span>Linkedin</span>
+    </a>
+    
+    <a href="https://drive.google.com/file/d/1UlVWrLADAAZal7O2h-HzK6AesDrLrVPF/view" target="_blank">
+      <i class="fa-solid fa-file-arrow-down"></i>
+      <span>Download Resume</span>
+    </a>
+  
+    <a href="https://codolio.com/profile/bhaumiksingh_10" target="_blank">
+      <i class="fa-solid fa-code"></i>
+      <span>Coding Profile</span>
+    </a>
+  </div>
+</nav>
 
+<main>
+
+<!-- HERO SECTION -->
+<section class="hero-section">
+  <div class="text">
+    <h2>Hi, I'm Bhaumik 👋</h2>
+    <p>
+      Motivated Computer Science student with strong expertise in Java programming, 
+      OOPS, and data structures. Passionate about backend development, REST APIs, 
+      and building scalable software solutions.
+    </p>
+
+    <div class="links">
+      <a href="#education"><i class="fa-solid fa-graduation-cap"></i><span>Education</span></a>
+      <a href="#skills"><i class="fa-solid fa-code"></i><span>Skills</span></a>
+      <a href="#projects"><i class="fa-solid fa-diagram-project"></i><span>Projects</span></a>
+      <a href="#experience"><i class="fa-solid fa-briefcase"></i><span>Experience</span></a>
+      <a href="#certificates"><i class="fa-solid fa-certificate"></i><span>Certifications</span></a>
+      <a href="#contact"><i class="fa-solid fa-envelope"></i><span>Contact</span></a>
     </div>
-  </nav>
+  </div>
 
-  <main>
-    <!-- SECTION 1: Hero -->
-    <section class="hero-section">
-      <div class="text">
-        <h2>Hi, I'm Bhaumik 👋</h2>
-        <p>A passionate B.Tech student with a love for building secure, 
-          user-friendly digital solutions through web development, cybersecurity, and creative problem-solving.</p>
+  <div class="headshot">
+    <img src="bhaumik.png" alt="Bhaumik">
+  </div>
+</section>
 
-        <div class="links">
-          <a href="#education">
-            <i class="fa-solid fa-graduation-cap"></i>
-            <span>Education</span>
-          </a>
-
-          <a href="#skills">
-            <i class="fa-solid fa-code"></i>
-            <span>Skills</span>
-          </a>
-          
-          <a href="#projects">
-            <i class="fa-solid fa-diagram-project"></i>
-            <span>Projects</span>
-          </a>
-
-          <a href="#experience">
-            <i class="fa-solid fa-briefcase"></i>
-            <span>Work Experience</span>
-          </a>
-
-          <a href="#certifications">
-            <i class="fa-solid fa-certificate"></i>
-            <span>Certifications</span>
-          </a>
-        
-          <a href="#contact">
-            <i class="fa-solid fa-envelope"></i>
-            <span>Contact</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="headshot">
-        <img src="bhaumik.png" alt="john doe headshot">
-      </div>
-    </section>
-
-
-    <!-- SECTION 1: educaton -->
-
-   <!-- SECTION 1: Education -->
+<!-- EDUCATION -->
 <section id="education" class="resume-section">
   <h2>Education</h2>
   
   <div class="education-grid">
     <div class="education-card">
-      <h3>Galgotias University, Greater Noida, UP</h3>
-      <p><strong>Bachelor of Technology (CSE)</strong> <br>
-        <strong>Duration:</strong> Oct 2022 – Present <br>
-        <strong>CGPA:</strong> 8.1
+      <h3>Galgotias University, Greater Noida</h3>
+      <p><strong>B.Tech (CSE)</strong><br>
+        Duration: Oct 2022 – Present<br>
+        CGPA: 8.1
       </p>
     </div>
+
     <div class="education-card">
-      <h3>Police Modern School Bareilly,UP</h3>
-      <p><strong>12th</strong> | Marks: 73.8% (2022) <br>
-        <h3>Shri Gulab Rai Montessori Sr Sec school,Bareilly,UP</h3>
-        <strong>10th</strong> | Marks: 73% (2020)<br>
-      </p>
+      <h3>Police Modern School, Bareilly</h3>
+      <p>12th | 2022 | Marks: 73.8%</p>
+      <h3>Shri Gulab Rai Montessori Sr Sec School, Bareilly</h3>
+      <p>10th | 2020 | Marks: 73%</p>
     </div>
   </div>
 </section>
 
-    
-    <!-- SECTION 2: Skills -->
-<!-- SECTION 2: Skills -->
+<!-- SKILLS (UPDATED) -->
 <section id="skills" class="resume-section">
   <h2>Skills</h2>
   
   <div class="skills-grid">
+
     <div class="skill-card">
       <h3>Programming Languages</h3>
       <ul>
-        <li>Java</li>
-        <li>C++</li>
+        <li>Java (Core Java, OOPS, Multithreading, Collections)</li>
+        <li>C, C++</li>
         <li>Python</li>
         <li>JavaScript</li>
       </ul>
     </div>
+
     <div class="skill-card">
-      <h3>Web Development</h3>
+      <h3>Backend & APIs</h3>
+      <ul>
+        <li>Java Backend Development</li>
+        <li>RESTful API Development</li>
+        <li>Spring Boot (Basics)</li>
+        <li>MVC Architecture</li>
+        <li>API Testing & Integration (Postman)</li>
+      </ul>
+    </div>
+
+    <div class="skill-card">
+      <h3>Database & SQL</h3>
+      <ul>
+        <li>MySQL</li>
+        <li>PostgreSQL</li>
+        <li>DBMS Concepts</li>
+        <li>SQL Queries & Database Design</li>
+      </ul>
+    </div>
+
+    <div class="skill-card">
+      <h3>Web Technologies</h3>
       <ul>
         <li>HTML5</li>
-        <li>CSS</li>
+        <li>CSS3</li>
         <li>Tailwind CSS</li>
         <li>Bootstrap</li>
-        <li>React.js</li>
+        <li>React.js (Basics)</li>
       </ul>
     </div>
-    <div class="skill-card">
-      <h3>Productivity Tools</h3>
-      <ul>
-        <li>Microsoft Excel</li>
-        <li>PowerPoint</li>
-        <li>Microsoft Office</li>
-        <li>MySQL</li>
-      </ul>
-    </div>
+
     <div class="skill-card">
       <h3>Development Tools</h3>
       <ul>
-        <li>Git</li>
+        <li>Git & GitHub</li>
         <li>IntelliJ IDEA</li>
         <li>Eclipse</li>
-        <li>Visual Studio Code</li>
+        <li>VS Code</li>
+        <li>Postman</li>
       </ul>
     </div>
+
     <div class="skill-card">
       <h3>Core Computer Science</h3>
       <ul>
@@ -170,166 +161,110 @@
         <li>Operating Systems</li>
         <li>Computer Networks</li>
         <li>Software Engineering</li>
-        <li>DBMS</li>
       </ul>
     </div>
-    <div class="skill-card">
-      <h3>Soft Skills</h3>
-      <ul>
-        <li>Analytical Thinking</li>
-        <li>Teamwork</li>
-        <li>Leadership</li>
-        <li>Adaptability</li>
-        <li>Problem-Solving</li>
-        <li>Communication</li>
-      </ul>
-    </div>
-    <div class="skill-card">
-      <h3>Languages</h3>
-      <ul>
-        <li>Hindi</li>
-        <li>English</li>
-      </ul>
-    </div>
+
   </div>
 </section>
 
-
-    <!--<section id="skills" class="skills-section">
-      <h2>Skills</h2>
-      <div class="text">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates, perspiciatis iure distinctio quidem aperiam necessitatibus omnis possimus excepturi amet quos rerum? Perferendis repellat natus saepe quaerat quibusdam neque recusandae optio?
-      </div>
-
-      <div class="cells">
-        <div class="cell">
-          <img src="images/html-logo.webp" alt="html logo">
-          <span>HTML</span>
-        </div>
-        
-        <div class="cell">
-          <img src="images/css-logo.webp" alt="css logo">
-          <span>CSS</span>
-        </div>
-        
-        <div class="cell">
-          <img src="images/javascript-logo.webp" alt="javascript logo">
-          <span>JavaScript</span>
-        </div>
-        
-        <div class="cell">
-          <img src="images/node-logo.webp" alt="node logo">
-          <span>Node.js</span>
-        </div>
-        
-        <div class="cell">
-          <img src="images/react-logo.webp" alt="react logo">
-          <span>React.js</span>
-        </div>
-      </div>
-    </section>   --->
-
-   <!-- SECTION 3: Projects -->
+<!-- PROJECTS (UPDATED) -->
 <section id="projects" class="resume-section">
   <h2>Projects</h2>
   
   <div class="projects-grid">
+
+    <div class="project-card">
+      <h3>Digital Library Management System</h3>
+      <p>
+        Java-based backend system for managing books, users, and library operations 
+        with authentication and database integration.
+      </p>
+      <span>Tech Stack: Java, Spring Boot, PostgreSQL, REST APIs</span>
+    </div>
+
     <div class="project-card">
       <h3>Sorting Algorithm Visualizer</h3>
-      <p>Interactive tool for demonstrating sorting algorithms with animations and speed controls.</p>
+      <p>
+        Interactive web application to visualize sorting algorithms with animations 
+        and real-time speed control.
+      </p>
       <span>Tech Stack: HTML, CSS, JavaScript</span>
     </div>
+
     <div class="project-card">
       <h3>Portfolio Website</h3>
-      <p>Personal website showcasing skills, projects, and achievements with a responsive design.</p>
+      <p>
+        Responsive personal portfolio showcasing skills, projects, and achievements 
+        with modern UI design.
+      </p>
       <span>Tech Stack: HTML, CSS, JavaScript</span>
     </div>
-    <div class="project-card">
-      <h3>Netflix Clone</h3>
-      <p>Dynamic app integrating real-time movie data via API for seamless exploration.</p>
-      <span>Tech Stack: React.js, API Integration</span>
-    </div>
-    <div class="project-card">
-      <h3>Dairy Digitization</h3>
-      <p>Developed a full-stack web application for managing grocery store operations.features such as inventory management, billing system, and detailed reports.
-         </p>
-      <span>Tech Stack: JavaServlets,JSP,MySQL
-        ,HTML,CSS</span>
-      
-    </div>
+
   </div>
 </section>
 
-<!-- SECTION 4: Experience -->
+<!-- EXPERIENCE -->
 <section id="experience" class="resume-section">
   <h2>Experience</h2>
   
   <div class="experience-grid">
     <div class="experience-card">
       <h3>Cybersecurity Virtual Internship</h3>
-      <p>Palo Alto Networks | May–July 2023</p>
-      <span>Applied network security techniques to identify and mitigate vulnerabilities.</span>
+      <p>Palo Alto Networks | 2023</p>
+      <span>Applied network security concepts to identify and mitigate vulnerabilities.</span>
     </div>
+
     <div class="experience-card">
       <h3>Android Developer Virtual Internship</h3>
-      <p>Google for Developers | Apr–June 2024</p>
-      <span>Developed a Weather App in Kotlin for real-time weather updates and forecasts.</span>
+      <p>Google for Developers | 2024</p>
+      <span>Developed a weather app using Kotlin with real-time API integration.</span>
     </div>
+
     <div class="experience-card">
       <h3>Web Development Virtual Internship</h3>
-      <p>Jan–Feb 2025</p>
-      <span>Built a Movie Discovery App with real-time API integration and a user-friendly interface.</span>
+      <p>2025</p>
+      <span>Built a movie discovery app using real-time APIs and responsive UI.</span>
     </div>
   </div>
 </section>
 
-<!-- SECTION 5: Certificates -->
+<!-- CERTIFICATES -->
 <section id="certificates" class="resume-section">
   <h2>Certificates</h2>
  
   <div class="certificates-grid">
     <div class="certificate-card">
-      <h3>Java Certification</h3>
-      <p>GFG | 4-month training</p>
-      <span>Core Java, OOP, recursion, dynamic programming, and advanced data structures.</span>
+      <h3>Java & DSA Certification</h3>
+      <p>GeeksforGeeks</p>
     </div>
-    <div class="certificate-card">
-      <h3>Python Certification</h3>
-      <p>GeeksforGeeks | 3-month training</p>
-      <span>Basics, data types, NumPy, and Pandas.</span>
-    </div>
+
     <div class="certificate-card">
       <h3>Web Development Certification</h3>
-      <p>EduSkills | 3-month course</p>
-      <span>HTML, CSS, JavaScript, React, and backend fundamentals with Node.js.</span>
+      <p>EduSkills Academy</p>
     </div>
   </div>
 </section>
 
-   
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <h2>Contact</h2>
+  <div class="group">
+    <form action="https://formspree.io/f/mbdyybbj" method="POST">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" required>
+  
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" required>
+  
+  <label for="message">Message</label>
+  <textarea id="message" name="message" rows="8" required></textarea>
+  
+  <button type="submit">Send Message</button>
+</form>
 
-    <!-- SECTION 6: Contact -->
-    <section id="contact" class="contact-section">
-      <h2>Contact</h2>
-      <div class="group">
-        <form>
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
-          
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
-          
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="8" required></textarea>
-          
-          <button type="submit">Send Message</button>
-        </form>
-      </div>
-    </section>
-    
-  </main>
+  </div>
+</section>
+
+</main>
 </body>
 </html>
-
-
-
