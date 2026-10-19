@@ -1,0 +1,217 @@
+---
+import Icon from '../ui/Icon.astro';
+import { withBase, isActive } from '../../lib/url';
+
+const links = [
+  { href: withBase('/work/'), label: 'Work' },
+  { href: withBase('/services/'), label: 'Services' },
+  { href: withBase('/giving-back/'), label: 'Giving back' },
+  { href: withBase('/resume/'), label: 'Resume' },
+];
+const path = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="wrap nav-inner">
+    <a class="brand" href={withBase('/')}>Bhaumik.</a>
+
+    <nav class="site-nav" aria-label="Main">
+      <ul class="nav-links" id="site-menu">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href} aria-current={isActive(path, link.href) ? 'page' : undefined}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="nav-menu-cta">
+          <a class="btn btn-primary" href={withBase('/contact/')}>Start a project</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn btn-primary btn-sm nav-cta" href={withBase('/contact/')}>Start a project</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu" hidden>
+        <span class="menu-icon menu-icon--open"><Icon name="menu" /></span>
+        <span class="menu-icon menu-icon--close"><Icon name="close" /></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const menu = document.getElementById('site-menu');
+
+  if (button && menu) {
+    button.hidden = false;
+    const isOpen = () => button.getAttribute('aria-expanded') === 'true';
+    const setOpen = (open: boolean) => {
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menu.classList.toggle('open', open);
+    };
+
+    button.addEventListener('click', () => setOpen(!isOpen()));
+    menu.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+    document.addEventListener('click', (event) => {
+      const target = event.target as Node;
+      if (isOpen() && !menu.contains(target) && !button.contains(target)) setOpen(false);
+    });
+    window.matchMedia('(max-width: 820px)').addEventListener('change', () => setOpen(false));
+  }
+</script>
+
+<style>
+  /* The notebook's top margin: plain paper above a red line. */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 2px solid var(--margin-red);
+  }
+  .nav-inner {
+    position: relative;
+    min-height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .brand {
+    font-family: var(--font-hand, cursive);
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--pen);
+    padding-top: 4px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-links a:not(.btn) {
+    display: block;
+    padding: 6px 12px 8px;
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .nav-links a:not(.btn):hover {
+    color: var(--pen);
+  }
+  .nav-links a[aria-current='page'] {
+    color: var(--pen);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 C 40 3, 80 3, 120 6 S 180 9, 198 4' fill='none' stroke='%231d43c6' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E")
+      center bottom / calc(100% - 20px) 8px no-repeat;
+  }
+  .nav-menu-cta {
+    display: none;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .menu-btn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    border: 2px solid var(--ink);
+    background: var(--card);
+    color: var(--ink);
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-icon {
+    display: inline-flex;
+  }
+  .menu-icon--close,
+  .menu-btn[aria-expanded='true'] .menu-icon--open {
+    display: none;
+  }
+  .menu-btn[aria-expanded='true'] .menu-icon--close {
+    display: inline-flex;
+  }
+
+  @media (max-width: 820px) {
+    .nav-cta {
+      display: none;
+    }
+    .menu-btn {
+      display: inline-flex;
+    }
+
+    /* Without JS the links wrap onto a second row. */
+    .nav-inner {
+      flex-wrap: wrap;
+    }
+    .site-nav {
+      order: 3;
+      width: 100%;
+    }
+    .nav-links {
+      flex-wrap: wrap;
+      padding-bottom: 10px;
+    }
+    .nav-links a:not(.btn) {
+      padding-left: 0;
+      padding-right: 14px;
+    }
+
+    /* With JS they live in a dropdown sheet. */
+    :global(.js) .site-nav {
+      order: 0;
+      width: auto;
+    }
+    :global(.js) .nav-links {
+      display: none;
+      position: absolute;
+      top: calc(100% + 2px);
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 8px 18px 22px 42px;
+      background: var(--paper);
+      border-bottom: 2px solid var(--margin-red);
+      box-shadow: 0 24px 30px -24px rgba(27, 28, 43, 0.35);
+    }
+    :global(.js) .nav-links.open {
+      display: flex;
+    }
+    :global(.js) .nav-links a:not(.btn) {
+      padding: 12px 0;
+      font-size: 15px;
+      border-bottom: 1px solid var(--rule);
+      background-position: left bottom;
+      background-size: 120px 8px;
+    }
+    :global(.js) .nav-menu-cta {
+      display: block;
+      margin-top: 16px;
+    }
+    :global(.js) .nav-menu-cta .btn {
+      width: 100%;
+    }
+  }
+</style>

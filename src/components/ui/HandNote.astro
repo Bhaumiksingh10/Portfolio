@@ -1,0 +1,52 @@
+---
+// A short handwritten note in blue pen, with an optional hand-drawn arrow.
+interface Props {
+  arrow?: 'down' | 'up' | 'left' | 'none';
+  class?: string;
+}
+
+const { arrow = 'down', class: className } = Astro.props;
+const paths = {
+  down: ['M6 6c10 2 18 10 20 24', 'M19 25l7 7 5-9'],
+  up: ['M8 38c2-12 10-24 22-30', 'M22 6l9 1-2 9'],
+  left: ['M38 12c-10-2-22 2-30 12', 'M14 17l-6 8 9 3'],
+  none: [],
+} as const;
+---
+
+<p class:list={['hand-note', className]}>
+  {
+    arrow !== 'none' && (
+      <svg viewBox="0 0 44 44" aria-hidden="true">
+        {paths[arrow].map((d) => (
+          <path d={d} fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+        ))}
+      </svg>
+    )
+  }
+  <span><slot /></span>
+</p>
+
+<style>
+  .hand-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    max-width: 36ch;
+    font-family: var(--font-hand, cursive);
+    font-size: 21px;
+    line-height: 1.25;
+    color: var(--pen);
+    transform: rotate(-1.5deg);
+    transform-origin: left;
+  }
+  svg {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    margin-top: -8px;
+  }
+  span {
+    text-wrap: balance;
+  }
+</style>

@@ -1,0 +1,64 @@
+---
+// Renders nothing until real testimonials are added to src/data/testimonials.ts.
+import SectionHeading from './SectionHeading.astro';
+import { testimonials } from '../../data/testimonials';
+---
+
+{
+  testimonials.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <SectionHeading title="Kind words" note="from people I've worked with" />
+        <div class="grid-3">
+          {testimonials.map((t, i) => (
+            <figure class:list={['sticky', 'quote', i % 3 === 1 ? 'sticky--pink' : i % 3 === 2 ? 'sticky--mint' : '']}>
+              <blockquote>
+                <p>“{t.quote}”</p>
+              </blockquote>
+              <figcaption>
+                <strong>{t.name}</strong>
+                <span>
+                  {t.role}
+                  {t.company ? `, ${t.company}` : ''}
+                </span>
+                {t.url && (
+                  <a class="text-link" href={t.url} target="_blank" rel="noopener noreferrer">
+                    View source
+                  </a>
+                )}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .quote {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 19px;
+  }
+  .quote:nth-child(odd) {
+    transform: rotate(-1deg);
+  }
+  .quote:nth-child(even) {
+    transform: rotate(1deg);
+  }
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: auto;
+    font-family: var(--font-sans, system-ui, sans-serif);
+    font-size: 13.5px;
+    color: var(--ink-2);
+  }
+  figcaption strong {
+    color: var(--ink);
+    font-size: 14.5px;
+  }
+</style>

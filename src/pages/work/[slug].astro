@@ -1,0 +1,285 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/ui/PageHead.astro';
+import MetricList from '../../components/ui/MetricList.astro';
+import TagList from '../../components/ui/TagList.astro';
+import CTASection from '../../components/ui/CTASection.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { getService } from '../../data/services';
+import { getWork, type WorkEntry } from '../../lib/work';
+import { withBase } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const work = await getWork();
+  return work.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: { entry, index, prev: work[index - 1], next: work[index + 1] },
+  }));
+}
+
+interface Props {
+  entry: WorkEntry;
+  index: number;
+  prev?: WorkEntry;
+  next?: WorkEntry;
+}
+
+const { entry, index, prev, next } = Astro.props;
+const { Content } = await render(entry);
+const { title, summary, contextLabel, role, period, stack, metrics, badge, pdf, pdfLabel, repo, live } = entry.data;
+const relatedServices = entry.data.services.map(getService);
+const external = { target: '_blank', rel: 'noopener noreferrer' };
+---
+
+<BaseLayout title={title} description={summary}>
+  <article>
+    <PageHead label={contextLabel} page={`02.${index + 1}`} title={title} lead={summary} back={{ href: withBase('/work/'), label: 'All work' }}>
+      <dl class="form-line">
+        <div>
+          <dt>Role</dt>
+          <dd>{role}</dd>
+        </div>
+        {
+          period && (
+            <div>
+              <dt>When</dt>
+              <dd>{period}</dd>
+            </div>
+          )
+        }
+        {
+          badge && (
+            <div>
+              <dt>Award</dt>
+              <dd>{badge}</dd>
+            </div>
+          )
+        }
+      </dl>
+    </PageHead>
+
+    <div class="wrap case-body">
+      <div class="case-main">
+        {
+          metrics.length > 0 && (
+            <div class="case-metrics">
+              <MetricList metrics={metrics} />
+            </div>
+          )
+        }
+        <div class="prose">
+          <Content />
+        </div>
+      </div>
+
+      <aside class="case-aside" aria-label="Project details">
+        <div class="index-card tilt-2">
+          <span class="tab label">Tech used</span>
+          <TagList items={stack} />
+          {
+            (pdf || repo || live) && (
+              <div class="case-links">
+                {pdf && (
+                  <a class="link-arrow" href={pdf} {...external}>
+                    <Icon name="file" class="icon-sm" />
+                    {pdfLabel}
+                  </a>
+                )}
+                {repo && (
+                  <a class="link-arrow" href={repo} {...external}>
+                    <Icon name="github" class="icon-sm" />
+                    Source code
+                  </a>
+                )}
+                {live && (
+                  <a class="link-arrow" href={live} {...external}>
+                    <Icon name="external" class="icon-sm" />
+                    Live site
+                  </a>
+                )}
+              </div>
+            )
+          }
+        </div>
+
+        {
+          relatedServices.length > 0 && (
+            <div class="sticky need">
+              <p class="need-title">need something similar?</p>
+              <ul>
+                {relatedServices.map((service) => (
+                  <li>
+                    <a href={withBase(`/services/#${service.id}`)}>{service.title}</a>
+                  </li>
+                ))}
+              </ul>
+              <a class="btn btn-primary btn-sm" href={withBase(`/contact/?service=${relatedServices[0].id}`)}>
+                Start a project
+              </a>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+
+    <nav class="wrap pager" aria-label="More case studies">
+      {
+        prev ? (
+          <a class="pager-link" href={withBase(`/work/${prev.id}/`)}>
+            <span class="hand">← previous</span>
+            <strong>{prev.data.title}</strong>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next && (
+          <a class="pager-link pager-next" href={withBase(`/work/${next.id}/`)}>
+            <span class="hand">next →</span>
+            <strong>{next.data.title}</strong>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .page-head :global(h1) {
+    font-size: clamp(2.2rem, 5.4vw, 3.8rem);
+    max-width: 22ch;
+  }
+  .form-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 40px;
+    margin-top: 28px;
+  }
+  .form-line div {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .form-line dt {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .form-line dd {
+    font-family: var(--font-hand, cursive);
+    font-size: 20px;
+    color: var(--pen);
+    border-bottom: 1.5px dotted var(--ink-3);
+    padding: 0 4px;
+  }
+  .case-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 56px;
+    align-items: start;
+    padding-top: 24px;
+    padding-bottom: 32px;
+  }
+  .case-metrics {
+    margin-bottom: 44px;
+    padding-top: 10px;
+  }
+  .case-aside {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .case-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1.5px dashed var(--line);
+  }
+  .need {
+    transform: rotate(1.2deg);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .need-title {
+    font-size: 21px;
+    font-weight: 700;
+  }
+  .need ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-family: var(--font-sans, system-ui, sans-serif);
+    font-size: 15px;
+    font-weight: 650;
+  }
+  .need ul a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .need ul a:hover {
+    color: var(--pen);
+  }
+  .need .btn {
+    margin-top: 6px;
+    font-family: var(--font-sans, system-ui, sans-serif);
+  }
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding-top: 28px;
+    padding-bottom: 8px;
+    border-top: 2px solid var(--ink);
+    margin-top: 16px;
+  }
+  .pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .pager-link .hand {
+    font-size: 19px;
+  }
+  .pager-link strong {
+    font-size: 16.5px;
+  }
+  .pager-link:hover strong {
+    color: var(--pen);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .pager-next {
+    grid-column: 2;
+    text-align: right;
+    align-items: flex-end;
+  }
+  @media (max-width: 920px) {
+    .case-body {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 40px;
+    }
+    .case-aside {
+      position: static;
+    }
+  }
+  @media (max-width: 600px) {
+    .pager {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .pager-next {
+      grid-column: auto;
+    }
+  }
+</style>

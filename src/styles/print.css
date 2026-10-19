@@ -1,0 +1,42 @@
+/* ---------- PRINT (used on /resume) ----------
+   Plain black on white: no ruled lines, margin, navigation or buttons. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  :root {
+    --paper: #ffffff;
+    --rule: transparent;
+    --ink: #111111;
+    --ink-2: #333333;
+    --ink-3: #555555;
+    --pen: #1d3aa8;
+    --shadow-paper: none;
+    --shadow-lift: none;
+  }
+
+  body {
+    background: #ffffff;
+    font-size: 10.5pt;
+    line-height: 1.45;
+  }
+  body::before,
+  .site-header,
+  .site-footer,
+  .skip-link {
+    display: none !important;
+  }
+
+  .wrap {
+    max-width: none;
+    padding: 0;
+  }
+  a {
+    text-decoration: none;
+  }
+  .tag {
+    font-size: 9pt;
+  }
+}

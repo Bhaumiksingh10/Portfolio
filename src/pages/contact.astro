@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/ui/PageHead.astro';
+import ContactForm from '../components/contact/ContactForm.astro';
+import ContactChannels from '../components/contact/ContactChannels.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Tell me about your project: a backend, an integration or a complete web app. I reply within 24 hours."
+>
+  <PageHead
+    label="Contact"
+    page="06"
+    title="Let's talk about *your project*"
+    lead={`Share a few details and I'll get back to you ${site.availability.responseTime}. Not sure exactly what you need? That's fine: describe the problem and we'll figure it out together.`}
+  />
+
+  <section class="section section--tight">
+    <div class="wrap contact-grid">
+      <div class="form-sheet">
+        <ContactForm />
+      </div>
+      <ContactChannels />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+  }
+  .form-sheet {
+    background: var(--card);
+    box-shadow: var(--shadow-lift);
+    padding: 36px clamp(20px, 4vw, 40px);
+  }
+  @media (max-width: 920px) {
+    .contact-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

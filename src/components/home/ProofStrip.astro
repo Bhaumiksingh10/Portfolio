@@ -1,0 +1,75 @@
+---
+import HandNote from '../ui/HandNote.astro';
+import { highlights } from '../../data/achievements';
+import { withBase } from '../../lib/url';
+---
+
+<section class="highlights" aria-label="Highlights from past work">
+  <div class="wrap">
+    <HandNote>a few numbers from real projects</HandNote>
+    <ul class="hl-grid">
+      {
+        highlights.map((item) => (
+          <li>
+            <a class="hl" href={withBase(`/work/${item.work}/`)}>
+              <span class="hl-value">
+                <span class="circled">{item.value}</span>
+              </span>
+              <span class="hl-label">{item.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .highlights {
+    padding: 8px 0 40px;
+  }
+  .hl-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+    margin-top: 22px;
+    padding: 26px 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  .hl {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 6px;
+  }
+  .hl-value {
+    font-weight: 850;
+    font-stretch: 115%;
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    line-height: 1.15;
+  }
+  .hl-label {
+    font-size: 14.5px;
+    color: var(--ink-2);
+    max-width: 20ch;
+  }
+  .hl:hover .hl-label {
+    color: var(--pen);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .hl-value {
+    white-space: nowrap;
+  }
+  @media (max-width: 760px) {
+    .hl-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 30px 20px;
+    }
+    .hl-value {
+      font-size: 1.3rem;
+      font-stretch: 100%;
+    }
+  }
+</style>

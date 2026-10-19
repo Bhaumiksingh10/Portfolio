@@ -1,0 +1,122 @@
+---
+import Icon from '../ui/Icon.astro';
+import HandNote from '../ui/HandNote.astro';
+import Marked from '../ui/Marked.astro';
+import PageCorner from '../ui/PageCorner.astro';
+import Portrait from '../ui/Portrait.astro';
+import { site } from '../../data/site';
+import { withBase } from '../../lib/url';
+
+const { hero, availability } = site;
+---
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <p class="label">Freelance backend &amp; web developer · {site.location}</p>
+      <PageCorner page="01" />
+    </div>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 class="display"><Marked text={hero.headline} /></h1>
+        <HandNote>{hero.note}</HandNote>
+        <p class="hero-intro">{hero.intro}</p>
+        <div class="btn-row">
+          <a class="btn btn-primary btn-lg" href={withBase('/contact/')}>
+            Start a project
+            <Icon name="arrow-right" />
+          </a>
+          <a class="pen-link" href={withBase('/work/')}>see my work first</a>
+        </div>
+        <p class="hero-meta">Replies {availability.responseTime} · Clients in India &amp; worldwide</p>
+      </div>
+
+      <div class="hero-visual">
+        <Portrait variant="polaroid" priority />
+        <p class="sticky hero-sticky">
+          <strong>{availability.labels[availability.status]}</strong>
+          <span>{availability.hours}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 28px 0 56px;
+  }
+  .hero-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-bottom: 32px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: 56px;
+    align-items: center;
+  }
+  h1 {
+    font-size: clamp(2.6rem, 6.4vw, 5rem);
+    margin-bottom: 18px;
+  }
+  .hero-intro {
+    margin: 22px 0 28px;
+    font-size: 18px;
+    color: var(--ink-2);
+    max-width: 54ch;
+  }
+  .hero-meta {
+    margin-top: 22px;
+    font-size: 14.5px;
+    color: var(--ink-3);
+  }
+  .hero-visual {
+    position: relative;
+    justify-self: center;
+    width: min(100%, 320px);
+    padding-bottom: 36px;
+  }
+  .hero-visual :global(.polaroid) {
+    transform: rotate(2.5deg);
+  }
+  .hero-sticky {
+    position: absolute;
+    left: -64px;
+    bottom: 0;
+    width: 170px;
+    margin: 0;
+    font-size: 17px;
+    transform: rotate(-4deg);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hero-sticky strong {
+    font-weight: 700;
+  }
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 40px;
+    }
+    .hero-visual {
+      width: min(78%, 300px);
+      padding-bottom: 0;
+    }
+    /* On narrow screens the note sits under the photo instead of over its caption. */
+    .hero-sticky {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      width: 180px;
+      margin: -12px -14px 0 auto;
+    }
+  }
+</style>

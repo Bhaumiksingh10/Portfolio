@@ -1,0 +1,69 @@
+---
+// The "Date ____  Page ____" box from the top corner of a school notebook.
+// The date fills in live (India time); without JavaScript it stays a blank line, like an unfilled notebook.
+interface Props {
+  page: string;
+}
+
+const { page } = Astro.props;
+---
+
+<dl class="corner" aria-hidden="true">
+  <div>
+    <dt>Date</dt>
+    <dd data-today></dd>
+  </div>
+  <div>
+    <dt>Page</dt>
+    <dd>{page}</dd>
+  </div>
+</dl>
+
+<script>
+  const day = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', year: 'numeric' });
+  const time = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit', hour12: true });
+  const render = () => {
+    const now = new Date();
+    const text = `${day.format(now)}, ${time.format(now).toLowerCase()} IST`;
+    document.querySelectorAll<HTMLElement>('[data-today]').forEach((el) => (el.textContent = text));
+  };
+  render();
+  window.setInterval(render, 30_000);
+</script>
+
+<style>
+  .corner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    padding: 8px 14px 10px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    width: fit-content;
+    max-width: 100%;
+  }
+  .corner div {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  dt {
+    font-size: 11.5px;
+    font-weight: 650;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  dd {
+    min-width: 54px;
+    font-family: var(--font-hand, cursive);
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--pen);
+    border-bottom: 1.5px dotted var(--ink-3);
+    white-space: nowrap;
+  }
+  .corner div:first-child dd {
+    min-width: 150px;
+  }
+</style>

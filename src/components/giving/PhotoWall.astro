@@ -1,0 +1,88 @@
+---
+// Taped polaroids of drive photos. Until real photos exist, shows empty frames waiting for them.
+import { Picture } from 'astro:assets';
+import Icon from '../ui/Icon.astro';
+import { getDrivePhotos } from '../../lib/drives';
+
+interface Props {
+  /** Show at most this many photos (0 = all). */
+  limit?: number;
+  /** Captions for the empty frames shown before any photos exist. */
+  placeholders?: string[];
+}
+
+const { limit = 0, placeholders = ['photos after our first drive', 'more coming soon'] } = Astro.props;
+const all = await getDrivePhotos();
+const photos = limit > 0 ? all.slice(0, limit) : all;
+---
+
+<div class="wall">
+  {
+    photos.length > 0
+      ? photos.map((photo) => (
+          <figure class="polaroid taped shot">
+            <Picture
+              src={photo.src}
+              alt={photo.alt}
+              formats={['webp']}
+              fallbackFormat="jpg"
+              widths={[260, 520]}
+              sizes="260px"
+              quality={72}
+            />
+            <figcaption>{photo.caption ?? photo.drive.data.title}</figcaption>
+          </figure>
+        ))
+      : placeholders.map((caption) => (
+          <figure class="polaroid taped shot empty">
+            <div class="frame">
+              <Icon name="camera" class="icon-lg" />
+              <span>photo goes here</span>
+            </div>
+            <figcaption>{caption}</figcaption>
+          </figure>
+        ))
+  }
+</div>
+
+<style>
+  .wall {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 34px 26px;
+    justify-content: center;
+    padding-top: 12px;
+  }
+  .shot {
+    width: 230px;
+    margin: 0;
+  }
+  .shot:nth-child(3n + 1) {
+    transform: rotate(-3deg);
+  }
+  .shot:nth-child(3n + 2) {
+    transform: rotate(2.5deg);
+    margin-top: 16px;
+  }
+  .shot:nth-child(3n) {
+    transform: rotate(-1deg);
+  }
+  .shot :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+  .frame {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 2px dashed #c3c9d6;
+    background: #f5f7fb;
+    color: var(--ink-3);
+    font-size: 13.5px;
+  }
+</style>

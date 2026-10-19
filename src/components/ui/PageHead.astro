@@ -1,0 +1,83 @@
+---
+// The top of an inner page: a small label, the notebook Date/Page box, a big title, an intro and an optional pen note.
+import HandNote from './HandNote.astro';
+import Icon from './Icon.astro';
+import Marked from './Marked.astro';
+import PageCorner from './PageCorner.astro';
+
+interface Props {
+  label: string;
+  /** Words between *asterisks* get the yellow highlighter. */
+  title: string;
+  page: string;
+  lead?: string;
+  note?: string;
+  /** Write the title by hand in blue pen instead of print. */
+  hand?: boolean;
+  back?: { href: string; label: string };
+}
+
+const { label, title, page, lead, note, hand = false, back } = Astro.props;
+---
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="head-top">
+      <p class="head-label">
+        {
+          back && (
+            <a class="back" href={back.href}>
+              <Icon name="arrow-left" class="icon-sm" />
+              {back.label}
+            </a>
+          )
+        }
+        <span class="label">{label}</span>
+      </p>
+      <PageCorner page={page} />
+    </div>
+    <h1 class:list={[hand ? 'hand hand-title' : 'display']}><Marked text={title} /></h1>
+    {lead && <p class="lead">{lead}</p>}
+    {note && <HandNote>{note}</HandNote>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .head-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-bottom: 28px;
+  }
+  .head-label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 650;
+    font-size: 14.5px;
+    color: var(--pen);
+  }
+  .back:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .hand-title {
+    font-weight: 700;
+    font-size: clamp(2.6rem, 6.6vw, 4.6rem);
+    line-height: 1.05;
+    letter-spacing: 0;
+    max-width: 16ch;
+  }
+  .page-head :global(.hand-note) {
+    margin-top: 16px;
+  }
+</style>

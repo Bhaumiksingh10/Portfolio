@@ -1,0 +1,35 @@
+---
+import HandNote from './HandNote.astro';
+
+interface Props {
+  title: string;
+  /** Extra words appended to the title under yellow highlighter. */
+  highlight?: string;
+  lead?: string;
+  /** Short handwritten note under the heading. */
+  note?: string;
+  id?: string;
+}
+
+const { title, highlight, lead, note, id } = Astro.props;
+---
+
+<div class="section-heading">
+  <h2 class="h-section" id={id}>{title}{highlight ? ' ' : ''}{highlight && <span class="marker">{highlight}</span>}</h2>
+  {lead && <p class="lead">{lead}</p>}
+  {note && <HandNote>{note}</HandNote>}
+  <slot />
+</div>
+
+<style>
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .h-section {
+    max-width: 22ch;
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/ui/PageHead.astro';
+import Icon from '../components/ui/Icon.astro';
+import { withBase } from '../lib/url';
+---
+
+<BaseLayout title="Page not found" description="This page doesn't exist." noindex>
+  <PageHead
+    label="Error 404"
+    page="??"
+    title="This page got *torn out*"
+    lead="The link may be broken, or the page may have moved. Here are some good places to start:"
+  >
+    <div class="btn-row links">
+      <a class="btn btn-primary" href={withBase('/')}>
+        Go to the home page
+        <Icon name="arrow-right" />
+      </a>
+      <a class="btn btn-ghost" href={withBase('/work/')}>See my work</a>
+      <a class="pen-link" href={withBase('/contact/')}>or contact me</a>
+    </div>
+  </PageHead>
+</BaseLayout>
+
+<style>
+  .links {
+    margin: 32px 0 80px;
+  }
+</style>

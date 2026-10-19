@@ -1,0 +1,116 @@
+---
+import { getImage } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import ProofStrip from '../components/home/ProofStrip.astro';
+import ProcessSteps from '../components/home/ProcessSteps.astro';
+import TechStack from '../components/home/TechStack.astro';
+import AboutShort from '../components/home/AboutShort.astro';
+import GivingTeaser from '../components/home/GivingTeaser.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ServiceCard from '../components/cards/ServiceCard.astro';
+import WorkCard from '../components/cards/WorkCard.astro';
+import FAQ from '../components/ui/FAQ.astro';
+import Testimonials from '../components/ui/Testimonials.astro';
+import CTASection from '../components/ui/CTASection.astro';
+import Icon from '../components/ui/Icon.astro';
+import portrait from '../assets/portrait.png';
+import { services } from '../data/services';
+import { faqs } from '../data/faq';
+import { getFeaturedWork } from '../lib/work';
+import { graph, personSchema, websiteSchema } from '../lib/jsonld';
+import { withBase } from '../lib/url';
+
+const featured = await getFeaturedWork(3);
+const homeFaqs = faqs.filter((faq) => faq.show.includes('home'));
+const personImage = await getImage({ src: portrait, width: 480, format: 'jpg' });
+const jsonLd = graph(websiteSchema(), personSchema(new URL(personImage.src, Astro.site).href));
+---
+
+<BaseLayout jsonLd={jsonLd}>
+  <Hero />
+  <ProofStrip />
+
+  <section class="section" id="services">
+    <div class="wrap">
+      <SectionHeading title="What I can build" highlight="for you" note="three things I'm good at:" />
+      <div class="grid-3">
+        {services.map((service, index) => <ServiceCard service={service} index={index} />)}
+      </div>
+      <p class="more">
+        <a class="link-arrow" href={withBase('/services/')}>
+          See services, pricing models &amp; how I work
+          <Icon name="arrow-right" class="icon-sm" />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="wrap">
+      <SectionHeading
+        title="Things I've"
+        highlight="built"
+        lead="Real projects, each told the same way: the problem, what I built, and what changed."
+      />
+      <div class="grid-3">
+        {featured.map((entry, index) => <WorkCard entry={entry} index={index} />)}
+      </div>
+      <p class="more">
+        <a class="link-arrow" href={withBase('/work/')}>
+          All case studies
+          <Icon name="arrow-right" class="icon-sm" />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <GivingTeaser />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading title="How we'll" highlight="work together" note="simple, and no surprises" />
+      <ProcessSteps />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading title="My" highlight="pencil box" lead="The languages and tools I build with every day." />
+      <TechStack />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <AboutShort />
+    </div>
+  </section>
+
+  <Testimonials />
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading title="Questions" highlight="clients ask" />
+      <FAQ items={homeFaqs} />
+      <p class="more">
+        <a class="link-arrow" href={withBase('/services/#faq')}>
+          More answers on the services page
+          <Icon name="arrow-right" class="icon-sm" />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .more {
+    margin-top: 34px;
+  }
+</style>

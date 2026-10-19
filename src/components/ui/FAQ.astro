@@ -1,0 +1,99 @@
+---
+import type { Faq } from '../../data/faq';
+
+interface Props {
+  items: Faq[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="faq">
+  {
+    items.map((item) => (
+      <details class="faq-item">
+        <summary>
+          <span class="q" aria-hidden="true">Q.</span>
+          <span class="question">{item.q}</span>
+          <span class="toggle" aria-hidden="true" />
+        </summary>
+        <p class="answer">
+          <span class="a" aria-hidden="true">A.</span>
+          <span>{item.a}</span>
+        </p>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq {
+    display: flex;
+    flex-direction: column;
+    max-width: 860px;
+    border-top: 2px solid var(--ink);
+  }
+  .faq-item {
+    border-bottom: 1.5px solid var(--ink);
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 24px;
+    gap: 10px;
+    align-items: baseline;
+    padding: 18px 4px;
+    font-weight: 650;
+    font-size: 17px;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary:hover .question {
+    color: var(--pen);
+  }
+  .q,
+  .a {
+    font-family: var(--font-hand, cursive);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--pen);
+    line-height: 1;
+  }
+  .toggle {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    align-self: center;
+  }
+  .toggle::before,
+  .toggle::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ink);
+    transition: transform 0.2s ease;
+  }
+  .toggle::after {
+    transform: rotate(90deg);
+  }
+  .faq-item[open] .toggle::after {
+    transform: rotate(0deg);
+  }
+  .answer {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+    padding: 0 4px 20px;
+    color: var(--ink-2);
+    font-size: 16px;
+  }
+  .answer > span:last-child {
+    max-width: 68ch;
+  }
+</style>

@@ -1,0 +1,40 @@
+/* ---------- DESIGN TOKENS: "Copy Notebook" ----------
+   A ruled Indian school notebook: blue rules, a red margin, ink-black type,
+   notes in ballpoint blue, a yellow highlighter, sticky notes and taped photos.
+   Light only, on purpose. */
+:root {
+  color-scheme: light;
+
+  /* paper */
+  --paper: #fdfdf8;
+  --card: #ffffff;
+  --rule: #d6e3f3;
+  --margin-red: #ee8a8a;
+  --line: #dfe2ea;
+
+  /* ink */
+  --ink: #1b1c2b;
+  --ink-2: #4b4c5d;
+  --ink-3: #66677a;
+  --pen: #1d43c6;
+  --pen-soft: rgba(29, 67, 198, .08);
+
+  /* stationery */
+  --marker: #ffe24a;
+  --note: #fff3a6;
+  --note-pink: #ffdbe5;
+  --note-mint: #d8f3e3;
+  --tape: rgba(255, 233, 150, .82);
+
+  /* states */
+  --ok: #1d7f45;
+  --error: #b42318;
+
+  --shadow-paper: 0 1px 2px rgba(27, 28, 43, .08), 0 14px 28px -18px rgba(27, 28, 43, .38);
+  --shadow-lift: 0 2px 4px rgba(27, 28, 43, .08), 0 22px 36px -20px rgba(27, 28, 43, .45);
+
+  --maxw: 1120px;
+  --nav-h: 64px;
+  /* the red margin line sits 22px left of the text column */
+  --margin-x: max(20px, calc(50% - (var(--maxw) + 96px) / 2 + 26px));
+}

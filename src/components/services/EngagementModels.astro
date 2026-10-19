@@ -1,0 +1,41 @@
+---
+import { engagementModels } from '../../data/services';
+---
+
+<div class="grid-3">
+  {
+    engagementModels.map((model, index) => (
+      <div class={`index-card model tilt-${(index % 3) + 1}`}>
+        <span class="tab label">{model.billing}</span>
+        <h3>{model.title}</h3>
+        <p class="best">
+          <span class="hand">best for:</span>
+          {' '}
+          {model.bestFor}
+        </p>
+        <p class="how">{model.howItWorks}</p>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .model {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    font-stretch: 106%;
+  }
+  .best,
+  .how {
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+  .best .hand {
+    font-size: 18px;
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../../data/site';
+---
+
+<div class="copy-email">
+  <a class="address" href={`mailto:${site.email}`}>{site.email}</a>
+  <button class="copy-btn" type="button" data-copy={site.email} hidden>
+    <Icon name="clipboard" class="icon-sm" />
+    Copy
+  </button>
+  <span class="copied" role="status" aria-live="polite"></span>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
+    const box = button.closest('.copy-email');
+    const status = box?.querySelector<HTMLElement>('.copied');
+    const address = box?.querySelector<HTMLElement>('.address');
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy ?? '');
+        if (status) status.textContent = 'copied!';
+      } catch {
+        // Clipboard blocked: select the address so Ctrl+C works.
+        if (address) {
+          const range = document.createRange();
+          range.selectNodeContents(address);
+          window.getSelection()?.removeAllRanges();
+          window.getSelection()?.addRange(range);
+        }
+        if (status) status.textContent = 'selected, press Ctrl+C';
+      }
+      window.setTimeout(() => {
+        if (status) status.textContent = '';
+      }, 2500);
+    });
+  });
+</script>
+
+<style>
+  .copy-email {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+  }
+  .address {
+    font-weight: 650;
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-underline-offset: 4px;
+  }
+  .address:hover {
+    color: var(--pen);
+  }
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 13px;
+    font-weight: 650;
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    background: var(--card);
+  }
+  .copy-btn:hover {
+    color: var(--pen);
+    border-color: var(--pen);
+  }
+  .copied {
+    font-family: var(--font-hand, cursive);
+    font-size: 18px;
+    color: var(--pen);
+  }
+</style>

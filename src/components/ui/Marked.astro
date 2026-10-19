@@ -1,0 +1,12 @@
+---
+// Renders text with *highlighted* words under yellow highlighter.
+import { markSegments } from '../../lib/text';
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+{markSegments(text).map((segment) => (segment.mark ? <span class="marker">{segment.text}</span> : segment.text))}

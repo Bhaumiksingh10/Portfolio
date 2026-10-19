@@ -1,0 +1,105 @@
+---
+import TagList from '../ui/TagList.astro';
+import type { WorkEntry } from '../../lib/work';
+import { withBase } from '../../lib/url';
+
+interface Props {
+  entry: WorkEntry;
+  headingLevel?: 'h2' | 'h3';
+  /** Position in a row, used for a slightly different hand-placed tilt. */
+  index?: number;
+}
+
+const { entry, headingLevel = 'h3', index = 0 } = Astro.props;
+const { title, summary, contextLabel, metrics, stack, badge } = entry.data;
+const Heading = headingLevel;
+const tilt = `tilt-${(index % 3) + 1}`;
+---
+
+<article class:list={['index-card', 'work-card', tilt]}>
+  <span class:list={['tab', 'label', { 'beside-scribble': badge }]}>{contextLabel}</span>
+  {badge && <span class="scribble">{badge}!</span>}
+  <Heading class="work-title">
+    <a class="stretched-link" href={withBase(`/work/${entry.id}/`)}>{title}</a>
+  </Heading>
+  <p class="work-summary">{summary}</p>
+  {
+    metrics.length > 0 && (
+      <ul class="work-metrics">
+        {metrics.slice(0, 3).map((metric) => (
+          <li>
+            <strong>{metric.value}</strong>
+            {' '}
+            {metric.label}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  <TagList items={stack.slice(0, 5)} label="Tech stack" />
+  <span class="pen-link work-more" aria-hidden="true">read the story</span>
+</article>
+
+<style>
+  .work-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .work-card:hover {
+    transform: rotate(0deg) translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+  .work-card:has(.stretched-link:focus-visible) {
+    outline: 2.5px solid var(--pen);
+    outline-offset: 4px;
+  }
+  .stretched-link:focus-visible {
+    outline: none;
+  }
+  .stretched-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .tab {
+    right: 22px;
+    font-size: 11.5px;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tab.beside-scribble {
+    right: 160px;
+  }
+  .work-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    font-stretch: 106%;
+  }
+  .work-card:hover .work-title {
+    color: var(--pen);
+  }
+  .work-summary {
+    color: var(--ink-2);
+    font-size: 15px;
+  }
+  .work-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 14.5px;
+    color: var(--ink-2);
+  }
+  .work-metrics strong {
+    color: var(--pen);
+    font-weight: 800;
+  }
+  .work-more {
+    margin-top: auto;
+    font-size: 19px;
+  }
+</style>

@@ -1,0 +1,191 @@
+---
+import Icon from '../ui/Icon.astro';
+import { formatStartingFrom, type Service } from '../../data/services';
+import { withBase } from '../../lib/url';
+import { getWorkByIds } from '../../lib/work';
+
+interface Props {
+  service: Service;
+  /** compact: index card for the home page. full: detailed section for /services. */
+  variant?: 'compact' | 'full';
+  /** Position in a row, used for a slightly different hand-placed tilt. */
+  index?: number;
+}
+
+const { service, variant = 'compact', index = 0 } = Astro.props;
+const price = formatStartingFrom(service.startingFrom);
+const proof = variant === 'full' ? await getWorkByIds(service.proof) : [];
+const tilt = `tilt-${(index % 3) + 1}`;
+---
+
+{
+  variant === 'compact' ? (
+    <article class:list={['index-card', 'service-card', tilt]}>
+      <span class="scribble">{service.scribble}</span>
+      <h3>{service.title}</h3>
+      <p class="summary">{service.summary}</p>
+      <ul class="tick-list">
+        {service.deliverables.slice(0, 3).map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+      <a class="link-arrow" href={withBase(`/services/#${service.id}`)}>
+        What's included<span class="sr-only">{` in ${service.title}`}</span>
+        <Icon name="arrow-right" class="icon-sm" />
+      </a>
+    </article>
+  ) : (
+    <article class="service-full" id={service.id} aria-labelledby={`${service.id}-title`}>
+      <div class="service-main">
+        <h2 class="h-section" id={`${service.id}-title`}>
+          {service.title}
+        </h2>
+        <p class="summary">{service.summary}</p>
+        <h3 class="label">Great for</h3>
+        <ul class="tick-list">
+          {service.forWho.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <div class="facts">
+          <p class="sticky fact">{service.timeline}</p>
+          {price && <p class="sticky sticky--mint fact">from {price}</p>}
+        </div>
+        <a class="btn btn-primary" href={withBase(`/contact/?service=${service.id}`)}>
+          Discuss your project
+          <Icon name="arrow-right" />
+        </a>
+      </div>
+
+      <div class={`index-card service-side ${tilt}`}>
+        <span class="tab label">What you get</span>
+        <span class="scribble">{service.scribble}</span>
+        <ul class="tick-list">
+          {service.deliverables.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        {(proof.length > 0 || service.proofNote) && (
+          <div class="proof">
+            <p class="hand proof-title">proof from past work:</p>
+            <ul class="proof-links">
+              {proof.map((entry) => (
+                <li>
+                  <a class="link-arrow" href={withBase(`/work/${entry.id}/`)}>
+                    {entry.data.title}
+                    <Icon name="arrow-right" class="icon-sm" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+            {service.proofNote && <p class="proof-note">{service.proofNote}</p>}
+          </div>
+        )}
+      </div>
+    </article>
+  )
+}
+
+<style>
+  /* Compact index card */
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .service-card:hover {
+    transform: rotate(0deg) translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+  .service-card h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    font-stretch: 108%;
+  }
+  .summary {
+    color: var(--ink-2);
+    font-size: 15.5px;
+  }
+  .service-card .tick-list {
+    margin: 2px 0 6px;
+  }
+  .service-card .link-arrow {
+    margin-top: auto;
+  }
+
+  /* Full section on /services */
+  .service-full {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+    padding: 56px 0;
+    border-top: 2px solid var(--ink);
+  }
+  .service-full:first-child {
+    border-top: 0;
+    padding-top: 12px;
+  }
+  .service-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .service-main .summary {
+    font-size: 17px;
+    max-width: 52ch;
+  }
+  .service-main .label {
+    margin-top: 6px;
+  }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 10px 0 8px;
+  }
+  .fact {
+    padding: 12px 16px;
+    font-size: 18px;
+  }
+  .fact:nth-child(1) {
+    transform: rotate(-1.5deg);
+  }
+  .fact:nth-child(2) {
+    transform: rotate(1.2deg);
+  }
+  .service-side {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 12px;
+  }
+  .proof {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1.5px dashed var(--line);
+  }
+  .proof-title {
+    font-size: 19px;
+  }
+  .proof-links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .proof-note {
+    font-size: 14.5px;
+    color: var(--ink-2);
+  }
+  @media (max-width: 860px) {
+    .service-full {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+      padding: 44px 0;
+    }
+  }
+</style>

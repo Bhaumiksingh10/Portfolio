@@ -1,0 +1,94 @@
+---
+import Icon from '../ui/Icon.astro';
+import { site } from '../../data/site';
+import { withBase } from '../../lib/url';
+
+const facts = [
+  { title: 'Software Developer, full-time', text: 'At a SaaS product company' },
+  { title: 'B.Tech, Computer Science', text: 'Galgotias University, 2026' },
+  { title: 'Best Paper Award', text: 'International Symposium on AI Frontiers 2.0' },
+  { title: `Based in ${site.location}`, text: `${site.timezone}, working with clients worldwide` },
+];
+---
+
+<div class="about">
+  <div class="about-copy">
+    <h2 class="h-section">A bit <span class="marker">about me</span></h2>
+    {site.bio.map((paragraph) => <p class="bio">{paragraph}</p>)}
+    <a class="btn btn-ghost" href={withBase('/resume/')}>
+      Read my resume
+      <Icon name="arrow-right" />
+    </a>
+  </div>
+  <div class="index-card facts tilt-2">
+    <span class="tab label">Quick facts</span>
+    <ul>
+      {
+        facts.map((fact) => (
+          <li>
+            <strong>{fact.title}</strong>
+            <span>{fact.text}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 56px;
+    align-items: center;
+  }
+  .about-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .about-copy h2 {
+    margin-bottom: 6px;
+  }
+  .bio {
+    color: var(--ink-2);
+    max-width: 62ch;
+  }
+  .about-copy .btn {
+    margin-top: 10px;
+  }
+  .facts ul {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .facts li {
+    display: flex;
+    flex-direction: column;
+    padding-left: 22px;
+    position: relative;
+    font-size: 14.5px;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
+  .facts li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    top: -2px;
+    font-family: var(--font-hand, cursive);
+    font-size: 19px;
+    color: var(--pen);
+  }
+  .facts strong {
+    color: var(--ink);
+    font-size: 15.5px;
+  }
+  @media (max-width: 860px) {
+    .about {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 36px;
+    }
+  }
+</style>

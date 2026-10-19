@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/ui/PageHead.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ServiceCard from '../components/cards/ServiceCard.astro';
+import EngagementModels from '../components/services/EngagementModels.astro';
+import ProcessSteps from '../components/home/ProcessSteps.astro';
+import FAQ from '../components/ui/FAQ.astro';
+import CTASection from '../components/ui/CTASection.astro';
+import { services, supportAddOn, principles } from '../data/services';
+import { faqs } from '../data/faq';
+import { graph, personSchema, serviceSchemas } from '../lib/jsonld';
+import { withBase } from '../lib/url';
+
+const serviceFaqs = faqs.filter((faq) => faq.show.includes('services'));
+const jsonLd = graph(personSchema(), ...serviceSchemas());
+---
+
+<BaseLayout
+  title="Services"
+  description="Freelance backend & REST API development, WhatsApp, payment and third-party integrations, and complete web apps, by Bhaumik Singh Chauhan."
+  jsonLd={jsonLd}
+>
+  <PageHead
+    label="Services"
+    page="03"
+    title="What I can build *for you*"
+    lead="Backend systems, integrations and complete web apps for startups, small businesses and agencies, with clear communication and code you fully own."
+  >
+    <nav class="jump" aria-label="Services on this page">
+      {services.map((service) => <a href={`#${service.id}`}>{service.title}</a>)}
+    </nav>
+  </PageHead>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      {services.map((service, index) => <ServiceCard service={service} variant="full" index={index} />)}
+
+      <div class="sticky sticky--mint addon">
+        <h2>Add-on: {supportAddOn.title}</h2>
+        <p>{supportAddOn.summary}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading
+        title="Ways to"
+        highlight="work together"
+        lead="Every project gets a clear quote before work starts. Pick the model that fits how you like to work."
+      />
+      <EngagementModels />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading title="How a project" highlight="runs" />
+      <ProcessSteps />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading title="What you can" highlight="expect" note="my promises to every client" />
+      <ul class="principles">
+        {
+          principles.map((item) => (
+            <li>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <SectionHeading title="Frequently asked" highlight="questions" />
+      <FAQ items={serviceFaqs} />
+      <p class="faq-more">
+        Have a question that isn't here? <a class="text-link" href={withBase('/contact/')}>Ask me directly</a>.
+      </p>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-top: 26px;
+  }
+  .jump a {
+    padding: 6px 14px;
+    background: var(--card);
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    font-weight: 650;
+    font-size: 14.5px;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .jump a:hover {
+    color: var(--pen);
+    border-color: var(--pen);
+    box-shadow: 2px 2px 0 var(--pen);
+  }
+  .addon {
+    max-width: 760px;
+    margin-top: 16px;
+    padding: 24px 26px;
+    transform: rotate(-0.6deg);
+    font-family: var(--font-sans, system-ui, sans-serif);
+  }
+  .addon h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .addon p {
+    font-size: 15.5px;
+    color: var(--ink-2);
+  }
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 48px;
+    max-width: 960px;
+  }
+  .principles li {
+    padding-left: 18px;
+    border-left: 3px solid var(--marker);
+  }
+  .principles h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .principles p {
+    font-size: 15.5px;
+    color: var(--ink-2);
+  }
+  .faq-more {
+    margin-top: 26px;
+    color: var(--ink-2);
+  }
+  @media (max-width: 700px) {
+    .principles {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

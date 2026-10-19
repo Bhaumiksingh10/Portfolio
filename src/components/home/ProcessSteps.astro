@@ -1,0 +1,84 @@
+---
+import { process } from '../../data/process';
+---
+
+<ol class="steps">
+  {
+    process.map((step, index) => (
+      <li class="step">
+        <span class="num" aria-hidden="true">
+          <span class="circled">{index + 1}</span>
+        </span>
+        <h3>{step.title}</h3>
+        <p>{step.text}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 26px;
+  }
+  /* dashed pen line joining the numbers */
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 30px;
+    right: 8%;
+    border-top: 2px dashed var(--pen);
+    opacity: 0.45;
+  }
+  .step {
+    position: relative;
+  }
+  .num {
+    display: inline-block;
+    font-family: var(--font-hand, cursive);
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.5;
+    color: var(--pen);
+    background: var(--paper);
+    padding: 0 6px;
+    margin-bottom: 14px;
+  }
+  h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  p {
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+  @media (max-width: 1000px) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      padding-left: 4px;
+    }
+    .steps::before {
+      top: 24px;
+      bottom: 24px;
+      left: 26px;
+      right: auto;
+      border-top: 0;
+      border-left: 2px dashed var(--pen);
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr);
+      column-gap: 12px;
+    }
+    .num {
+      grid-row: span 2;
+      margin-bottom: 0;
+      text-align: center;
+    }
+  }
+</style>

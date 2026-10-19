@@ -1,0 +1,152 @@
+---
+import Icon from '../ui/Icon.astro';
+import CopyEmail from '../ui/CopyEmail.astro';
+import type { IconName } from '../../lib/icons';
+import { site, whatsappUrl } from '../../data/site';
+import { nextSteps } from '../../data/contact';
+
+const { availability } = site;
+const whatsapp = whatsappUrl();
+
+const channels = [
+  whatsapp && { icon: 'whatsapp', label: 'WhatsApp', value: 'Chat with me', href: whatsapp },
+  site.calUrl && { icon: 'calendar', label: 'Book a call', value: 'Free intro call', href: site.calUrl },
+  { icon: 'linkedin', label: 'LinkedIn', value: 'bhaumik-singh-chauhan', href: site.socials.linkedin },
+  { icon: 'github', label: 'GitHub', value: 'Bhaumiksingh10', href: site.socials.github },
+].filter(Boolean) as { icon: IconName; label: string; value: string; href: string }[];
+---
+
+<aside class="channels" aria-label="Other ways to reach me">
+  <div class="sticky avail">
+    <p class="avail-title">{availability.labels[availability.status]}</p>
+    <p>{availability.hours}</p>
+    <p>Replies {availability.responseTime}</p>
+  </div>
+
+  <div class="index-card other tilt-2">
+    <span class="tab label">Prefer another way?</span>
+    <div class="email-block">
+      <p class="mini">Email</p>
+      <CopyEmail />
+    </div>
+    <ul class="channel-list">
+      {
+        channels.map((channel) => (
+          <li>
+            <a class="channel" href={channel.href} target="_blank" rel="noopener noreferrer">
+              <Icon name={channel.icon} />
+              <span>
+                <strong>{channel.label}</strong> · {channel.value}
+              </span>
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="next">
+    <h2 class="label">What happens next</h2>
+    <ol>
+      {
+        nextSteps.map((step, index) => (
+          <li>
+            <span class="num hand" aria-hidden="true">
+              {index + 1}.
+            </span>
+            <span>
+              <strong>{step.title}</strong>
+              <span>{step.text}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</aside>
+
+<style>
+  .channels {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+  .avail {
+    transform: rotate(-1.5deg);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 17px;
+  }
+  .avail-title {
+    font-size: 21px;
+    font-weight: 700;
+  }
+  .other {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .mini {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 4px;
+  }
+  .email-block {
+    padding-bottom: 14px;
+    border-bottom: 1.5px dashed var(--line);
+  }
+  .channel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .channel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14.5px;
+    color: var(--ink-2);
+  }
+  .channel strong {
+    color: var(--ink);
+  }
+  .channel:hover,
+  .channel:hover strong {
+    color: var(--pen);
+  }
+  .next ol {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .next .label {
+    color: var(--ink);
+  }
+  .next li {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .num {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .next li > span:last-child {
+    display: flex;
+    flex-direction: column;
+    font-size: 14.5px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .next strong {
+    color: var(--ink);
+    font-size: 15.5px;
+  }
+</style>

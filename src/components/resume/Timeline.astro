@@ -1,0 +1,78 @@
+---
+import type { Experience } from '../../data/experience';
+
+interface Props {
+  items: Experience[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="timeline">
+  {
+    items.map((item) => (
+      <li class="tl-item">
+        <div class="tl-head">
+          <h3>{item.role}</h3>
+          <span class="tl-period">{item.period}</span>
+        </div>
+        <p class="tl-org">
+          {[item.org, item.type, item.location].filter(Boolean).join(' · ')}
+          {item.current && <span class="now">now</span>}
+        </p>
+        <p class="tl-summary">{item.summary}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .tl-item {
+    break-inside: avoid;
+    padding-left: 18px;
+    border-left: 3px solid var(--marker);
+  }
+  .tl-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2px 16px;
+  }
+  h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+  .tl-period {
+    font-size: 13.5px;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+  .tl-org {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--pen);
+    margin: 2px 0 6px;
+  }
+  .now {
+    font-family: var(--font-hand, cursive);
+    font-size: 15px;
+    padding: 0 8px;
+    background: var(--note);
+    color: var(--ink);
+    transform: rotate(-3deg);
+  }
+  .tl-summary {
+    font-size: 14.5px;
+    color: var(--ink-2);
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+import Icon from '../ui/Icon.astro';
+import PhotoWall from '../giving/PhotoWall.astro';
+import { giving } from '../../data/giving';
+import { withBase } from '../../lib/url';
+---
+
+<div class="teaser">
+  <div class="teaser-copy">
+    <p class="label">Outside work</p>
+    <h2 class="hand giving-title">{giving.name}</h2>
+    <p class="text">
+      Food and warm clothes for people who need them, clean water for street animals and saplings for my city. Small drives, done
+      regularly, with friends.
+    </p>
+    <p class="sticky promise">no donations, just our time</p>
+    <a class="btn btn-ghost" href={withBase('/giving-back/')}>
+      Read about it
+      <Icon name="arrow-right" />
+    </a>
+  </div>
+  <PhotoWall limit={2} placeholders={['first drive: coming soon', 'water bowls next summer']} />
+</div>
+
+<style>
+  .teaser {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+  }
+  .teaser-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .giving-title {
+    font-weight: 700;
+    font-size: clamp(2.2rem, 4.6vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+  .text {
+    color: var(--ink-2);
+    font-size: 17px;
+    max-width: 48ch;
+  }
+  .promise {
+    padding: 8px 16px;
+    font-size: 19px;
+    transform: rotate(-1.5deg);
+    margin: 4px 0 8px;
+  }
+  @media (max-width: 860px) {
+    .teaser {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 36px;
+    }
+  }
+</style>

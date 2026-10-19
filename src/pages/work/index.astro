@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/ui/PageHead.astro';
+import WorkCard from '../../components/cards/WorkCard.astro';
+import CTASection from '../../components/ui/CTASection.astro';
+import { getWork } from '../../lib/work';
+
+const work = await getWork();
+---
+
+<BaseLayout
+  title="Work & case studies"
+  description="Case studies of backend systems, integrations and web apps built by Bhaumik Singh Chauhan: the problem, the solution and the outcome."
+>
+  <PageHead
+    label="Work"
+    page="02"
+    title="Things I've *built*"
+    lead="Systems from my current role, internships, research and personal projects. Each one covers the problem, what I built and the outcome."
+    note="work for employers is described without confidential details"
+  />
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="grid-2">
+        {work.map((entry, index) => <WorkCard entry={entry} headingLevel="h2" index={index} />)}
+      </div>
+    </div>
+  </section>
+
+  <CTASection title="Want something like this built?" />
+</BaseLayout>

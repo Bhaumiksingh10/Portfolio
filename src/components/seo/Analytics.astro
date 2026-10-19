@@ -1,0 +1,22 @@
+---
+// Optional, cookie-free analytics. Off until site.analytics is filled in (src/data/site.ts).
+import { site } from '../../data/site';
+
+const { provider, id } = site.analytics;
+---
+
+{
+  provider === 'goatcounter' && id && (
+    <script is:inline async data-goatcounter={`https://${id}.goatcounter.com/count`} src="https://gc.zgo.at/count.js" />
+  )
+}
+{
+  provider === 'cloudflare' && id && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token: id })}
+    />
+  )
+}

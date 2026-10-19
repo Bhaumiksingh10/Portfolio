@@ -1,0 +1,345 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/ui/PageHead.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import PhotoWall from '../components/giving/PhotoWall.astro';
+import CopyEmail from '../components/ui/CopyEmail.astro';
+import Icon from '../components/ui/Icon.astro';
+import { giving } from '../data/giving';
+import { site, whatsappUrl } from '../data/site';
+import { getDrives } from '../lib/drives';
+import { formatDriveDate } from '../lib/text';
+import { withBase } from '../lib/url';
+
+const drives = await getDrives();
+const focusTitle = Object.fromEntries(giving.focus.map((f) => [f.id, f.title]));
+const whatsapp = whatsappUrl(`Hi ${site.firstName}, I'd like to join a Giving Back drive.`);
+const noteTones = ['', 'sticky--pink', 'sticky--mint', ''];
+---
+
+<BaseLayout
+  title={giving.name}
+  description="Small, regular volunteer drives with friends: food and warm clothes for people in need, care for street animals and saplings for the city. No donations."
+>
+  <PageHead label="Giving back" page="04" title={giving.name} hand lead={giving.intro} note="no donations, just our time" />
+
+  <section class="section section--tight">
+    <div class="wrap story-grid">
+      <div class="story">
+        <h2 class="h-section">Why I'm <span class="marker">doing this</span></h2>
+        {giving.story.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <ul class="promises" aria-label="How I run it">
+        {
+          giving.promises.map((promise, index) => (
+            <li class:list={['sticky', noteTones[index % noteTones.length]]}>
+              <strong>{promise.title}</strong>
+              <span>{promise.text}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading title="What we" highlight="help with" note="two things, done properly" />
+      <div class="grid-2">
+        {
+          giving.focus.map((focus, index) => (
+            <article class={`index-card focus tilt-${index + 1}`}>
+              <span class="tab label">{focus.title}</span>
+              <span class="focus-icon">
+                <Icon name={focus.icon} class="icon-lg" />
+              </span>
+              <h3>{focus.text}</h3>
+              <ul class="tick-list">
+                {focus.ideas.map((idea) => (
+                  <li>{idea}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="drives">
+    <div class="wrap">
+      <SectionHeading title="Drive" highlight="log" lead="Every drive gets written down here: what we did, where and who joined." />
+      {
+        drives.length > 0 ? (
+          <ol class="log">
+            {drives.map((drive) => (
+              <li class="log-entry">
+                <p class="log-date hand">{formatDriveDate(drive.data.date, drive.data.status === 'planned')}</p>
+                <div class="log-body">
+                  <h3>
+                    {drive.data.title}
+                    {drive.data.status === 'planned' ? <span class="status planned">planned</span> : <span class="status done">done ✓</span>}
+                  </h3>
+                  <p class="log-meta">{[drive.data.place, focusTitle[drive.data.focus], drive.data.volunteers ? `${drive.data.volunteers} volunteers` : '', drive.data.result ?? ''].filter(Boolean).join(' · ')}</p>
+                  <p class="log-summary">{drive.data.summary}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p class="hand empty-log">the first drive will be written here soon</p>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading title="From our" highlight="drives" note="photos only with permission" />
+      <PhotoWall placeholders={['first drive: coming soon', 'water bowls next summer', 'saplings in the monsoon']} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap join-grid">
+      <div class="sticky join taped">
+        <h2>{giving.join.title}</h2>
+        <p>{giving.join.text}</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href={withBase('/contact/?service=volunteer')}>
+            I want to join
+            <Icon name="arrow-right" />
+          </a>
+          {
+            whatsapp && (
+              <a class="btn btn-ghost" href={whatsapp} target="_blank" rel="noopener noreferrer">
+                <Icon name="whatsapp" />
+                WhatsApp me
+              </a>
+            )
+          }
+        </div>
+        <div class="join-email">
+          <span class="hand">or email:</span>
+          <CopyEmail />
+        </div>
+      </div>
+      <div class="elsewhere">
+        <h2 class="label">Not near me? Help where you live</h2>
+        <ul>
+          {
+            giving.elsewhere.map((group) => (
+              <li>
+                <a class="link-arrow" href={group.url} target="_blank" rel="noopener noreferrer">
+                  {group.name}
+                  <Icon name="external" class="icon-sm" />
+                </a>
+                <span>{group.text}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <p class="disclaimer">{giving.disclaimer}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .story-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+  .story {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .story h2 {
+    margin-bottom: 6px;
+  }
+  .story p {
+    color: var(--ink-2);
+    max-width: 58ch;
+  }
+  .promises {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+  .promises li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 17px;
+  }
+  .promises li:nth-child(1) {
+    transform: rotate(-2deg);
+  }
+  .promises li:nth-child(2) {
+    transform: rotate(1.5deg);
+  }
+  .promises li:nth-child(3) {
+    transform: rotate(1deg);
+  }
+  .promises li:nth-child(4) {
+    transform: rotate(-1.2deg);
+  }
+  .promises strong {
+    font-size: 21px;
+    font-weight: 700;
+  }
+  .focus {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .focus-icon {
+    color: var(--pen);
+  }
+  .focus h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    font-stretch: 106%;
+  }
+  .log {
+    max-width: 880px;
+    border-top: 2px solid var(--ink);
+  }
+  .log-entry {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .log-date {
+    font-size: 21px;
+    font-weight: 700;
+  }
+  .log-body h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    font-size: 1.15rem;
+    font-weight: 800;
+  }
+  .status {
+    font-family: var(--font-hand, cursive);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 1px 10px;
+    transform: rotate(-2deg);
+  }
+  .status.planned {
+    background: var(--note);
+  }
+  .status.done {
+    background: var(--note-mint);
+    color: var(--ok);
+  }
+  .log-meta {
+    font-size: 14px;
+    color: var(--ink-3);
+    margin: 4px 0 8px;
+  }
+  .log-summary {
+    color: var(--ink-2);
+    max-width: 64ch;
+  }
+  .empty-log {
+    font-size: 22px;
+  }
+  .join-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+  }
+  .join {
+    padding: 40px 34px 32px;
+    transform: rotate(-0.8deg);
+    font-family: var(--font-sans, system-ui, sans-serif);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .join h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 850;
+    font-stretch: 115%;
+  }
+  .join > p {
+    color: var(--ink-2);
+    font-size: 17px;
+    max-width: 48ch;
+  }
+  .join .btn-row {
+    margin-top: 6px;
+  }
+  .join-email {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    margin-top: 6px;
+    font-size: 15px;
+  }
+  .join-email .hand {
+    font-size: 19px;
+  }
+  .elsewhere {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .elsewhere .label {
+    color: var(--ink);
+  }
+  .elsewhere ul {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .elsewhere li {
+    display: flex;
+    flex-direction: column;
+    font-size: 14.5px;
+    color: var(--ink-2);
+  }
+  .disclaimer {
+    max-width: 70ch;
+    font-size: 13.5px;
+    color: var(--ink-3);
+    padding-top: 16px;
+    border-top: 1.5px dashed var(--line);
+  }
+  @media (max-width: 900px) {
+    .story-grid,
+    .join-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 40px;
+    }
+  }
+  @media (max-width: 520px) {
+    .promises {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .log-entry {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 4px;
+    }
+    .join {
+      padding: 34px 20px 26px;
+      transform: none;
+    }
+  }
+</style>

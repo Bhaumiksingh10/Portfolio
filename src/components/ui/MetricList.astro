@@ -1,0 +1,49 @@
+---
+// Numbers circled in blue pen, with what they mean underneath.
+interface Props {
+  metrics: { value: string; label: string }[];
+}
+
+const { metrics } = Astro.props;
+---
+
+{
+  metrics.length > 0 && (
+    <dl class="metrics">
+      {metrics.map((metric) => (
+        <div class="metric">
+          <dt>{metric.label}</dt>
+          <dd>
+            <span class="circled">{metric.value}</span>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+<style>
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 22px 26px;
+  }
+  .metric {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  dd {
+    font-weight: 850;
+    font-stretch: 115%;
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+  dt {
+    font-size: 14.5px;
+    color: var(--ink-2);
+    line-height: 1.4;
+    max-width: 22ch;
+  }
+</style>

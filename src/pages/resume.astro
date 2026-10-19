@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageCorner from '../components/ui/PageCorner.astro';
+import HandNote from '../components/ui/HandNote.astro';
+import Portrait from '../components/ui/Portrait.astro';
+import Timeline from '../components/resume/Timeline.astro';
+import TagList from '../components/ui/TagList.astro';
+import Icon from '../components/ui/Icon.astro';
+import { site } from '../data/site';
+import { experience } from '../data/experience';
+import { education } from '../data/education';
+import { skills } from '../data/skills';
+import { achievements, publication } from '../data/achievements';
+import { getWork } from '../lib/work';
+import { withBase } from '../lib/url';
+import '../styles/print.css';
+
+const work = await getWork();
+const resumeHref = withBase(site.resumeUrl);
+const linkedinHandle = site.socials.linkedin.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+const githubHandle = site.socials.github.replace(/^https?:\/\//, '');
+---
+
+<BaseLayout
+  title="Resume"
+  description="Experience, skills, education and achievements of Bhaumik Singh Chauhan, backend & web developer (Java, Spring Boot, Node.js)."
+>
+  <section class="page-head resume-intro">
+    <div class="wrap">
+      <div class="head-top">
+        <p class="label">Resume</p>
+        <PageCorner page="05" />
+      </div>
+      <div class="actions">
+        <div class="btn-row">
+          <a class="btn btn-primary" href={resumeHref} target="_blank" rel="noopener noreferrer">
+            <Icon name="download" />
+            Download PDF
+          </a>
+          <button class="btn btn-ghost" type="button" data-print hidden>
+            <Icon name="printer" />
+            Print this page
+          </button>
+        </div>
+        <HandNote>the one-page version, for recruiters and clients</HandNote>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <article class="sheet" aria-label="Resume">
+      <span class="clip" aria-hidden="true"></span>
+      <header class="sheet-head">
+        <Portrait variant="avatar" />
+        <div>
+          <h1>{site.name}</h1>
+          <p class="role">{site.tagline}</p>
+          <ul class="contact">
+            <li>
+              <Icon name="mail" class="icon-sm" />
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </li>
+            <li>
+              <Icon name="linkedin" class="icon-sm" />
+              <a href={site.socials.linkedin} target="_blank" rel="noopener noreferrer">{linkedinHandle}</a>
+            </li>
+            <li>
+              <Icon name="github" class="icon-sm" />
+              <a href={site.socials.github} target="_blank" rel="noopener noreferrer">{githubHandle}</a>
+            </li>
+            <li>
+              <Icon name="map-pin" class="icon-sm" />
+              {site.location} · {site.timezone}
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <div class="sheet-body">
+        <div class="col-main">
+          <section aria-labelledby="r-summary">
+            <h2 id="r-summary">Summary</h2>
+            <p class="text">{site.resumeSummary}</p>
+          </section>
+
+          <section aria-labelledby="r-experience">
+            <h2 id="r-experience">Experience</h2>
+            <Timeline items={experience} />
+          </section>
+
+          <section aria-labelledby="r-projects">
+            <h2 id="r-projects">Selected projects</h2>
+            <ul class="projects">
+              {
+                work.map((entry) => (
+                  <li>
+                    <a class="project-title" href={withBase(`/work/${entry.id}/`)}>
+                      {entry.data.title}
+                    </a>
+                    <span class="project-meta">{[entry.data.contextLabel, entry.data.stack.slice(0, 4).join(', ')].join(' · ')}</span>
+                    <p>{entry.data.summary}</p>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+
+          <section aria-labelledby="r-publication">
+            <h2 id="r-publication">Publication</h2>
+            <p class="pub-title">{publication.title}</p>
+            <p class="text">{publication.venue} · {publication.award}</p>
+            {
+              publication.url && (
+                <a class="link-arrow" href={publication.url} target="_blank" rel="noopener noreferrer">
+                  Read the paper
+                  <Icon name="arrow-right" class="icon-sm" />
+                </a>
+              )
+            }
+          </section>
+        </div>
+
+        <div class="col-side">
+          <section aria-labelledby="r-skills">
+            <h2 id="r-skills">Skills</h2>
+            <div class="skills">
+              {
+                skills.map((group) => (
+                  <div>
+                    <h3>{group.title}</h3>
+                    <TagList items={group.items} />
+                  </div>
+                ))
+              }
+            </div>
+          </section>
+
+          <section aria-labelledby="r-education">
+            <h2 id="r-education">Education</h2>
+            <ul class="list">
+              {
+                education.map((item) => (
+                  <li>
+                    <strong>{item.school}</strong>
+                    <span class="accent">{item.qualification}</span>
+                    <span class="dim">{item.period}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+
+          <section aria-labelledby="r-achievements">
+            <h2 id="r-achievements">Achievements</h2>
+            <ul class="list">
+              {
+                achievements.map((item) => (
+                  <li>
+                    <strong>{item.title}</strong>
+                    <span class="small">{item.text}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+        </div>
+      </div>
+    </article>
+  </div>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-print]').forEach((button) => {
+    button.hidden = false;
+    button.addEventListener('click', () => window.print());
+  });
+</script>
+
+<style>
+  .resume-intro {
+    padding-bottom: 36px;
+  }
+  .head-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-bottom: 26px;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 30px;
+  }
+
+  /* A white sheet clipped into the notebook */
+  .sheet {
+    position: relative;
+    background: var(--card);
+    box-shadow: var(--shadow-lift);
+    padding: 48px clamp(22px, 5vw, 56px) 52px;
+    margin-bottom: 40px;
+  }
+  .clip {
+    position: absolute;
+    top: -16px;
+    left: 44px;
+    width: 26px;
+    height: 64px;
+    border: 3px solid #8d93a3;
+    border-radius: 13px;
+    background: transparent;
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding-bottom: 26px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .sheet-head h1 {
+    font-size: clamp(2rem, 4.4vw, 3rem);
+    font-weight: 850;
+    font-stretch: 115%;
+    letter-spacing: -0.02em;
+  }
+  .role {
+    color: var(--ink-2);
+    margin-top: 2px;
+  }
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+  .contact li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+  }
+  .contact a {
+    overflow-wrap: anywhere;
+  }
+  .contact a:hover {
+    color: var(--pen);
+  }
+  .sheet-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 44px;
+    padding-top: 30px;
+  }
+  .col-main,
+  .col-side {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+  .sheet h2 {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pen);
+    margin-bottom: 14px;
+  }
+  .text {
+    color: var(--ink-2);
+    font-size: 15.5px;
+  }
+  .projects {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .projects li {
+    break-inside: avoid;
+  }
+  .project-title {
+    font-weight: 800;
+    font-size: 15.5px;
+  }
+  .project-title:hover {
+    color: var(--pen);
+  }
+  .project-meta {
+    display: block;
+    font-size: 13px;
+    color: var(--ink-3);
+    margin: 1px 0 3px;
+  }
+  .projects p {
+    font-size: 14.5px;
+    color: var(--ink-2);
+  }
+  .pub-title {
+    font-weight: 800;
+    font-size: 15.5px;
+  }
+  .skills {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .skills h3 {
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-bottom: 7px;
+  }
+  .skills :global(.tag) {
+    font-size: 12.5px;
+    padding: 1px 8px;
+    border-width: 1px;
+  }
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .list li {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    break-inside: avoid;
+  }
+  .list strong {
+    font-size: 14.5px;
+  }
+  .accent {
+    font-size: 13.5px;
+    color: var(--pen);
+    font-weight: 600;
+  }
+  .dim {
+    font-size: 13px;
+    color: var(--ink-3);
+  }
+  .small {
+    font-size: 13.5px;
+    color: var(--ink-2);
+  }
+  @media (max-width: 860px) {
+    .sheet-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .sheet-head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+  }
+
+  /* Print: keep two columns on A4 and drop the notebook decoration. */
+  @media print {
+    .resume-intro,
+    .clip {
+      display: none !important;
+    }
+    .sheet {
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sheet-head {
+      padding-bottom: 14px;
+    }
+    .sheet-body {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 26px;
+      padding-top: 16px;
+    }
+    .col-main,
+    .col-side {
+      gap: 18px;
+    }
+    .sheet h2 {
+      margin-bottom: 8px;
+    }
+    .text,
+    .projects p {
+      font-size: 10pt;
+    }
+  }
+</style>
