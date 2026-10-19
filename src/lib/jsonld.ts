@@ -10,6 +10,9 @@ export function personSchema(imageUrl?: string) {
     '@type': 'Person',
     '@id': personId(),
     name: site.name,
+    // Short forms people search for, so Google ties them to this person.
+    alternateName: ['Bhaumik Singh', 'Bhaumik Chauhan'],
+    description: site.seo.description,
     jobTitle: 'Freelance Backend & Web Developer',
     url: absoluteUrl('/'),
     ...(imageUrl ? { image: imageUrl } : {}),
@@ -55,6 +58,17 @@ export function serviceSchemas() {
     provider: { '@id': personId() },
     areaServed: 'Worldwide',
   }));
+}
+
+/** Marks the home page as Bhaumik's profile page (Google's ProfilePage structured data). */
+export function profilePageSchema() {
+  return {
+    '@type': 'ProfilePage',
+    '@id': `${absoluteUrl('/')}#profile`,
+    url: absoluteUrl('/'),
+    name: site.seo.title,
+    mainEntity: { '@id': personId() },
+  };
 }
 
 export function graph(...nodes: object[]) {

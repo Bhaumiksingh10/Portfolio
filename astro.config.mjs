@@ -3,9 +3,9 @@ import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // Hosted on Netlify. During a Netlify build, process.env.URL is the site's main address:
-// the free ….netlify.app one today, or your own domain once you add it in Netlify. No code change needed then.
+// the free bhaumiksingh.netlify.app today, or your own domain once you add it in Netlify. No code change needed then.
 // The fallback is only used for local builds.
-const SITE = process.env.URL ?? 'https://bhaumikchauhan.netlify.app';
+const SITE = process.env.URL ?? 'https://bhaumiksingh.netlify.app';
 
 export default defineConfig({
   site: SITE,

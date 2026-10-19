@@ -58,7 +58,7 @@ export const site: SiteConfig = {
   seo: {
     title: 'Bhaumik Singh Chauhan — Freelance Backend & Web Developer',
     description:
-      'Freelance backend & web developer (Java, Spring Boot, Node.js). I build REST APIs, WhatsApp, payment and third-party integrations, and complete web apps for startups and businesses.',
+      'Bhaumik Singh Chauhan is a freelance backend & web developer from India (Java, Spring Boot, Node.js), building REST APIs, WhatsApp and payment integrations, and complete web apps.',
     ogImage: '/og/default.png',
     googleVerification: '',
   },

@@ -18,13 +18,13 @@ import portrait from '../assets/portrait.png';
 import { services } from '../data/services';
 import { faqs } from '../data/faq';
 import { getFeaturedWork } from '../lib/work';
-import { graph, personSchema, websiteSchema } from '../lib/jsonld';
+import { graph, personSchema, profilePageSchema, websiteSchema } from '../lib/jsonld';
 import { withBase } from '../lib/url';
 
 const featured = await getFeaturedWork(3);
 const homeFaqs = faqs.filter((faq) => faq.show.includes('home'));
 const personImage = await getImage({ src: portrait, width: 480, format: 'jpg' });
-const jsonLd = graph(websiteSchema(), personSchema(new URL(personImage.src, Astro.site).href));
+const jsonLd = graph(websiteSchema(), profilePageSchema(), personSchema(new URL(personImage.src, Astro.site).href));
 ---
 
 <BaseLayout jsonLd={jsonLd}>
