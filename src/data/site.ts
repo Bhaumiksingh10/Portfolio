@@ -53,7 +53,7 @@ export const site: SiteConfig = {
   whatsapp: '',
   calUrl: '',
   resumeUrl: 'https://drive.google.com/file/d/1dnt5dabo-zCwvQWLEEqogzEvORej5jip/view?usp=drive_link',
-  web3forms: { accessKey: '', hcaptcha: false },
+  web3forms: { accessKey: 'd9434f5f-5f7e-42b2-b37d-cadc7193e5c1', hcaptcha: false },
   analytics: { provider: null, id: '' },
   seo: {
     title: 'Bhaumik Singh Chauhan — Freelance Backend & Web Developer',
